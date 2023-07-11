@@ -1,12 +1,14 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    colorize (1.1.0)
     gosu (1.4.6)
 
 PLATFORMS
   arm64-darwin-22
 
 DEPENDENCIES
+  colorize
   gosu
 
 BUNDLED WITH
