@@ -3,7 +3,7 @@
 require 'colorize'
 
 class Board
-  attr_reader :chessboard
+  attr_accessor :chessboard
 
   def initialize
     @chessboard = Array.new(8) { Array.new(8, '') }
@@ -15,12 +15,13 @@ class Board
       chessboard_row.each do |chessboard_cell|
         if chessboard_cell == ''
           print '   '.colorize(background: colors[0])
-          colors.rotate!
+        else
+          print " #{chessboard_cell} ".colorize(background: colors[0])
         end
+        colors.rotate!
       end
       colors.rotate!
       puts
     end
   end
 end
-
