@@ -11,8 +11,11 @@ class Board
   end
 
   def display_chessboard
+    number = 8
+    letters = %w[a b c d e f g h]
     colors = %i[black white]
     chessboard.each do |chessboard_row|
+      print "#{number} "
       chessboard_row.each do |chessboard_cell|
         if chessboard_cell == ''
           send(colors.first, '   ')
@@ -21,9 +24,11 @@ class Board
         end
         colors.rotate!
       end
+      number -= 1
       colors.rotate!
       puts
     end
+    puts "   #{letters.join('  ')}"
   end
 
   private
