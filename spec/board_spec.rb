@@ -71,5 +71,46 @@ describe Board do
         expect(board.get_piece(position)).to be nil
       end
     end
+
+    describe 'remove_piece' do
+      context 'when the position is valid' do
+        subject(:board) { described_class.new }
+        let(:piece) { double('piece') }
+        let(:position) { [0, 0] }
+        before do
+          allow(board).to receive(:valid_position?).and_return(true)
+          board.set_piece(piece, position)
+        end
+        it 'removes the piece from the chessboard' do
+          x, y = position
+          board.remove_piece(position)
+          expect(board.chessboard[x][y]).to eq('')
+        end
+
+        it 'returns true' do
+          expect(board.remove_piece(position)).to be true
+        end
+      end
+
+      context 'when the position is invalid' do
+        subject(:board) { described_class.new }
+        let(:piece) { double('piece') }
+        let(:position) { [0, 0] }
+        before do
+          allow(board).to receive(:valid_position?).and_return(true, false)
+          board.set_piece(piece, position)
+        end
+
+        it 'does not remove the piece from the chessboard' do
+          x, y = position
+          board.remove_piece(position)
+          expect(board.chessboard[x][y]).to eq(piece)
+        end
+
+        it 'returns false' do
+          expect(board.remove_piece(position)).to be false
+        end
+      end
+    end
   end
 end

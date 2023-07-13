@@ -1,5 +1,8 @@
 # frozen_string_literal: false
 
+# rubocop:disable Lint/MissingCopEnableDirective
+# rubocop:disable Naming/MethodParameterName
+
 require 'colorize'
 require 'pastel'
 
@@ -35,6 +38,16 @@ class Board
     x, y = position
     if valid_position?(x, y)
       @chessboard[x][y] = piece
+      true
+    else
+      false
+    end
+  end
+
+  def remove_piece(position)
+    x, y = position
+    if valid_position?(x, y)
+      @chessboard[x][y] = ''
       true
     else
       false
