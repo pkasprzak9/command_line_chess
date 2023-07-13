@@ -1,7 +1,6 @@
 # frozen_string_literal: false
 
 # rubocop:disable Lint/MissingCopEnableDirective
-# rubocop:disable Layout/LineLength
 
 require 'colorize'
 require_relative '../lib/board'
@@ -52,7 +51,7 @@ describe Board do
   end
 
   describe '#get_piece' do
-    subject(:board) { board = described_class.new }
+    subject(:board) { described_class.new }
     let(:piece) { double('piece') }
 
     context 'when the position is valid' do
