@@ -15,4 +15,8 @@ class Piece
     klass = Object.const_get(figure.capitalize)
     klass.new(color)
   end
+
+  def to_s
+    @figure
+  end
 end

@@ -23,7 +23,7 @@ class Board
         if chessboard_cell == ''
           send(colors.first, '   ')
         else
-          send(colors.first, " #{chessboard_cell.figure} ")
+          send(colors.first, " #{chessboard_cell} ")
         end
         colors.rotate!
       end
