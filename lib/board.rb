@@ -59,6 +59,15 @@ class Board
     @chessboard[x][y] if valid_position?(x, y)
   end
 
+  def get_position(piece)
+    @chessboard.each_with_index do |chessboard_row, x|
+      chessboard_row.each_with_index do |chessboard_cell, y|
+        return [x, y] if chessboard_cell == piece
+      end
+    end
+    nil
+  end
+
   def valid_position?(x, y)
     x.between?(0, 7) && y.between?(0, 7)
   end

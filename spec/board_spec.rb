@@ -72,7 +72,7 @@ describe Board do
       end
     end
 
-    describe 'remove_piece' do
+    describe '#remove_piece' do
       context 'when the position is valid' do
         subject(:board) { described_class.new }
         let(:piece) { double('piece') }
@@ -109,6 +109,27 @@ describe Board do
 
         it 'returns false' do
           expect(board.remove_piece(position)).to be false
+        end
+      end
+    end
+
+    describe '#get_position' do
+      subject(:board) { described_class.new }
+      let(:piece) { double('piece') }
+      let(:position) { [4, 4] }
+
+      context 'when the piece is on the chessboard' do
+        before do
+          board.set_piece(piece, position)
+        end
+        it 'returns the position of the piece' do
+          expect(board.get_position(piece)).to eq(position)
+        end
+      end
+
+      context 'when the piece is not on the chessboard' do
+        it 'returns nil' do
+          expect(board.get_position(piece)).to be nil
         end
       end
     end
