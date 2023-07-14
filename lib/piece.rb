@@ -1,6 +1,7 @@
 # frozen_string_literal: false
 
 require 'pastel'
+require_relative './board'
 
 class Piece
   attr_reader :color, :figure, :moves
