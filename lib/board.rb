@@ -59,6 +59,10 @@ class Board
     @chessboard[x][y] if valid_position?(x, y)
   end
 
+  def valid_position?(x, y)
+    x.between?(0, 7) && y.between?(0, 7)
+  end
+
   private
 
   def black(input)
@@ -69,9 +73,5 @@ class Board
   def white(input)
     pastel = Pastel.new
     print pastel.on_white(input)
-  end
-
-  def valid_position?(x, y)
-    x.between?(0, 7) && y.between?(0, 7)
   end
 end
