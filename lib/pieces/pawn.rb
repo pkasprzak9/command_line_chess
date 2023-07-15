@@ -1,5 +1,7 @@
 # frozen_string_literal: false
 
+# rubocop:disable Metrics/AbcSize
+
 class Pawn < Piece
   def initialize(color)
     super(color, '♟')
@@ -7,23 +9,27 @@ class Pawn < Piece
     @capturing_moves = [[1, 1], [1, -1], [-1, 1], [-1, -1]]
   end
 
-  # rubocop:disable Metrics/AbcSize
   def possible_moves(board)
     position = board.get_position(self)
     possible_moves = []
     @moves.each do |move|
-      x, y = position
+      temp_position = position
+      x, y = temp_position
       x += move[0]
       y += move[1]
-      possible_moves << [x, y] if board.valid_position?(x, y)
+      temp_position = [x, y]
+      possible_moves << temp_position if board.valid_position?(temp_position)
     end
     @capturing_moves.each do |move|
-      x, y = position
+      temp_position = position
+      x, y = temp_position
       x += move[0]
       y += move[1]
-      possible_moves << [x, y] if board.valid_position?(x, y) && board.occupied_by_opponent?(self, [x, y])
+      temp_position = [x, y]
+      if board.valid_position?(temp_position) && board.occupied_by_opponent?(self, temp_position)
+        possible_moves << temp_position
+      end
     end
     possible_moves
   end
-  # rubocop:enable Metrics/AbcSize
 end

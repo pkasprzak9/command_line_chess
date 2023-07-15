@@ -10,10 +10,12 @@ class King < Piece
     position = board.get_position(self)
     possible_moves = []
     @moves.each do |move|
-      x, y = position
+      temp_position = position
+      x, y = temp_position
       x += move[0]
       y += move[1]
-      possible_moves << [x, y] if board.valid_position?(x, y)
+      temp_position = [x, y]
+      possible_moves << temp_position if board.valid_position?(temp_position)
     end
     possible_moves
   end

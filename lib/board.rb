@@ -36,7 +36,7 @@ class Board
 
   def set_piece(piece, position)
     x, y = position
-    if valid_position?(x, y)
+    if valid_position?(position)
       @chessboard[x][y] = piece
       true
     else
@@ -45,8 +45,8 @@ class Board
   end
 
   def remove_piece(position)
-    x, y = position
-    if valid_position?(x, y)
+    if valid_position?(position)
+      x, y = position
       @chessboard[x][y] = ''
       true
     else
@@ -56,7 +56,7 @@ class Board
 
   def get_piece(position)
     x, y = position
-    @chessboard[x][y] if valid_position?(x, y)
+    @chessboard[x][y] if valid_position?(position)
   end
 
   def get_position(piece)
@@ -68,7 +68,9 @@ class Board
     nil
   end
 
-  def valid_position?(x, y)
+  # TODO: refactor this method to get just one argument
+  def valid_position?(position)
+    x, y = position
     x.between?(0, 7) && y.between?(0, 7)
   end
 
