@@ -138,22 +138,20 @@ describe Board do
       subject(:board) { described_class.new }
       context 'when the position is valid' do
         it 'returns true' do
-          x = 0
-          y = 0
-          expect(board.valid_position?(x, y)).to be true
+          position = [0, 0]
+          expect(board.valid_position?(position)).to be true
         end
       end
 
       context 'when the position is invalid' do
         it 'returns false' do
-          x = 8
-          y = 8
-          expect(board.valid_position?(x, y)).to be false
+          position = [8, 8]
+          expect(board.valid_position?(position)).to be false
         end
       end
     end
 
-    describe 'occupied_by_opponent?' do
+    describe '#occupied_by_opponent?' do
       subject(:board) { described_class.new }
       let(:piece) { double('piece') }
       let(:opponent) { double('opponent') }
