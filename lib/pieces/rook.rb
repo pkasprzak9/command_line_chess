@@ -1,7 +1,5 @@
 # frozen_string_literal: false
 
-# rubocop:disable Metrics/AbcSize
-
 class Rook < Piece
   def initialize(color)
     super(color, '♜')
@@ -13,7 +11,6 @@ class Rook < Piece
     possible_moves = []
     @moves.each do |move|
       temp_position = position
-      x, y = temp_position
       multiplier = 1
       while board.valid_position?(temp_position)
         x = position[0] + (move[0] * multiplier)

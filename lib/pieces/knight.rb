@@ -10,8 +10,7 @@ class Knight < Piece
     position = board.get_position(self)
     possible_moves = []
     @moves.each do |move|
-      temp_position = position
-      x, y = temp_position
+      x, y = position
       x += move[0]
       y += move[1]
       temp_position = [x, y]

@@ -13,16 +13,14 @@ class Pawn < Piece
     position = board.get_position(self)
     possible_moves = []
     @moves.each do |move|
-      temp_position = position
-      x, y = temp_position
+      x, y = position
       x += move[0]
       y += move[1]
       temp_position = [x, y]
       possible_moves << temp_position if board.valid_position?(temp_position)
     end
     @capturing_moves.each do |move|
-      temp_position = position
-      x, y = temp_position
+      x, y = position
       x += move[0]
       y += move[1]
       temp_position = [x, y]

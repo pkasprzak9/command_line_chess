@@ -1,7 +1,6 @@
 # frozen_string_literal: false
 
 # rubocop:disable Lint/MissingCopEnableDirective
-# rubocop:disable Naming/MethodParameterName
 
 require 'colorize'
 require 'pastel'
@@ -68,7 +67,6 @@ class Board
     nil
   end
 
-  # TODO: refactor this method to get just one argument
   def valid_position?(position)
     x, y = position
     x.between?(0, 7) && y.between?(0, 7)

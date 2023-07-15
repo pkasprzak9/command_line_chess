@@ -1,7 +1,5 @@
 # frozen_string_literal: false
 
-# rubocop:disable Metrics/AbcSize
-
 class Queen < Piece
   def initialize(color)
     super(color, '♛')
