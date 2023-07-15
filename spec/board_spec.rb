@@ -133,5 +133,59 @@ describe Board do
         end
       end
     end
+
+    describe '#valid_position?' do
+      subject(:board) { described_class.new }
+      context 'when the position is valid' do
+        it 'returns true' do
+          x = 0
+          y = 0
+          expect(board.valid_position?(x, y)).to be true
+        end
+      end
+
+      context 'when the position is invalid' do
+        it 'returns false' do
+          x = 8
+          y = 8
+          expect(board.valid_position?(x, y)).to be false
+        end
+      end
+    end
+
+    describe 'occupied_by_opponent?' do
+      subject(:board) { described_class.new }
+      let(:piece) { double('piece') }
+      let(:opponent) { double('opponent') }
+      context 'when the position is occupied by an opponent' do
+        it 'returns true' do
+          allow(piece).to receive(:color).and_return(:white)
+          allow(opponent).to receive(:color).and_return(:black)
+          board.set_piece(piece, [0, 0])
+          board.set_piece(opponent, [1, 1])
+          expect(board.occupied_by_opponent?(piece, [1, 1])).to be true
+        end
+
+        context 'when the position is not occupied by an opponent' do
+          it 'returns false' do
+            allow(piece).to receive(:color).and_return(:white)
+            allow(opponent).to receive(:color).and_return(:black)
+            board.set_piece(piece, [0, 0])
+            board.set_piece(opponent, [1, 2])
+            expect(board.occupied_by_opponent?(piece, [1, 1])).to be false
+          end
+        end
+
+        context ' when the position is occupied by a piece of the same color' do
+          it 'returns false' do
+            allow(piece).to receive(:color).and_return(:white)
+            allow(opponent).to receive(:color).and_return(:white)
+            board.set_piece(piece, [0, 0])
+            board.set_piece(opponent, [1, 1])
+            expect(board.occupied_by_opponent?(piece, [1, 1])).to be false
+          end
+        end
+      end
+    end
   end
 end
