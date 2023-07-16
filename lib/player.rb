@@ -7,4 +7,4 @@ class Player
     @color = color
     @points = 0
   end
-endxs
+end
