@@ -3,13 +3,25 @@
 class Pawn < Piece
   def initialize(color)
     super(color, '♟')
-    @moves = [[1, 0], [2, 0], [-1, 0], [-2, 0]]
+    @moves = [[1, 0], [-1, 0]]
     @capturing_moves = [[1, 1], [1, -1], [-1, 1], [-1, -1]]
+    @first_moves = [[1, 0], [2, 0], [-1, 0], [-2, 0]]
+    @first_move = true
   end
 
+  # rubocop:disable Metrics/AbcSize
   def possible_moves(board)
-    possible_moves = super(board)
     position = board.get_position(self)
+    possible_moves = []
+
+    moves = @first_move ? @first_moves : @moves
+    moves.each do |move|
+      x, y = position
+      x += move[0]
+      y += move[1]
+      temp_position = [x, y]
+      possible_moves << temp_position if board.valid_position?(temp_position)
+    end
     @capturing_moves.each do |move|
       x, y = position
       x += move[0]
@@ -21,4 +33,5 @@ class Pawn < Piece
     end
     possible_moves
   end
+  # rubocop:enable Metrics/AbcSize
 end
