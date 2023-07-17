@@ -22,6 +22,7 @@ class SlidingPiece < Piece
 
       multiplier += 1
       possible_moves_for_direction << temp_position if board.valid_position?(temp_position)
+      break if board.valid_position?(temp_position) && board.occupied_by_opponent?(self, temp_position)
     end
     possible_moves_for_direction
   end
