@@ -11,6 +11,8 @@ class SlidingPiece < Piece
         x = position[0] + (move[0] * multiplier)
         y = position[1] + (move[1] * multiplier)
         temp_position = [x, y]
+        break if board.valid_position?(temp_position) && board.occupied_by_friendly?(self, temp_position)
+
         multiplier += 1
         possible_moves << temp_position if board.valid_position?(temp_position)
       end
