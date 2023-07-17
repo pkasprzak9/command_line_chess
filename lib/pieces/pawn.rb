@@ -9,12 +9,18 @@ class Pawn < Piece
     @first_move = true
   end
 
-  # rubocop:disable Metrics/AbcSize
   def possible_moves(board)
     position = board.get_position(self)
     possible_moves = []
 
     moves = @first_move ? @first_moves : @moves
+    possible_moves += calculate_moves(board, position, moves)
+    possible_moves += calculate_capturing_moves(board, position)
+    possible_moves
+  end
+
+  def calculate_moves(board, position, moves)
+    moves_result = []
     moves.each do |move|
       x, y = position
       x += move[0]
@@ -22,18 +28,22 @@ class Pawn < Piece
       temp_position = [x, y]
       break if board.valid_position?(temp_position) && board.occupied_by_friendly?(self, temp_position)
 
-      possible_moves << temp_position if board.valid_position?(temp_position)
+      moves_result << temp_position if board.valid_position?(temp_position)
     end
+    moves_result
+  end
+
+  def calculate_capturing_moves(board, position)
+    capturing_moves_result = []
     @capturing_moves.each do |move|
       x, y = position
       x += move[0]
       y += move[1]
       temp_position = [x, y]
       if board.valid_position?(temp_position) && board.occupied_by_opponent?(self, temp_position)
-        possible_moves << temp_position
+        capturing_moves_result << temp_position
       end
     end
-    possible_moves
+    capturing_moves_result
   end
-  # rubocop:enable Metrics/AbcSize
 end
