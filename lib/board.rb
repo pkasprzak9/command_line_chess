@@ -74,8 +74,12 @@ class Board
 
   def occupied_by_opponent?(piece, position)
     x, y = position
-    opponent = get_piece(position)
-    @chessboard[x][y] != '' && opponent.color != piece.color
+    @chessboard[x][y] != '' && @chessboard[x][y].color != piece.color
+  end
+
+  def occupied_by_friendly?(piece, position)
+    x, y = position
+    @chessboard[x][y] != '' && @chessboard[x][y].color == piece.color
   end
 
   private
