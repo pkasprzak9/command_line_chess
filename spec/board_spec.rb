@@ -152,6 +152,22 @@ describe Board do
     end
   end
 
+  describe '#occupied?' do
+    subject(:board) { described_class.new }
+    let(:piece) { double('piece') }
+    context 'when the position is occupied' do
+      it 'returns true' do
+        board.set_piece(piece, [0, 0])
+        expect(board.occupied?([0, 0])).to be true
+      end
+    end
+    context 'when the position is not occupied' do
+      it 'returns false' do
+        expect(board.occupied?([0, 0])).to be false
+      end
+    end
+  end
+
   describe '#occupied_by_opponent?' do
     subject(:board) { described_class.new }
     let(:piece) { double('piece') }

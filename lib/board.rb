@@ -73,6 +73,11 @@ class Board
     x.between?(0, 7) && y.between?(0, 7)
   end
 
+  def occupied?(position)
+    x, y = position
+    @chessboard[x][y] != ''
+  end
+
   def occupied_by_opponent?(piece, position)
     x, y = position
     @chessboard[x][y] != '' && @chessboard[x][y].color != piece.color
