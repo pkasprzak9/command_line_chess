@@ -1,9 +1,11 @@
 # frozen_string_literal: false
 
 # rubocop:disable Lint/MissingCopEnableDirective
+# rubocop:disable Metrics/ClassLength
 
 require 'colorize'
 require 'pastel'
+require_relative 'piece'
 
 class Board
   attr_accessor :chessboard, :first_player_color
@@ -16,7 +18,7 @@ class Board
   def display_chessboard
     number = 8
     letters = %w[a b c d e f g h]
-    colors = %i[black white]
+    colors = %i[white black]
     chessboard.each do |chessboard_row|
       print "#{number} "
       chessboard_row.each do |chessboard_cell|
@@ -88,6 +90,12 @@ class Board
     @chessboard[x][y] != '' && @chessboard[x][y].color == piece.color
   end
 
+  def prepare_chessboard(colors)
+    @first_player_color = colors.first
+    place_pawns(colors)
+    place_figures(colors)
+  end
+
   private
 
   def black(input)
@@ -98,5 +106,38 @@ class Board
   def white(input)
     pastel = Pastel.new
     print pastel.on_white(input)
+  end
+
+  def place_pawns(colors)
+    @chessboard.each_with_index do |chessboard_row, x|
+      chessboard_row.each_with_index do |_chessboard_cell, y|
+        if x == 1
+          set_piece(Piece.create(colors.last, 'pawn'), [x, y])
+        elsif x == 6
+          set_piece(Piece.create(colors.first, 'pawn'), [x, y])
+        end
+      end
+    end
+  end
+
+  def place_figures(colors)
+    figures = %w[rook knight bishop queen king bishop knight rook]
+    @chessboard.each_with_index do |chessboard_row, x|
+      chessboard_row.each_with_index do |_chessboard_cell, y|
+        if x.zero?
+          y = 0
+          figures.each do |figure|
+            set_piece(Piece.create(colors.last, figure), [x, y])
+            y += 1
+          end
+        elsif x == 7
+          y = 0
+          figures.each do |figure|
+            set_piece(Piece.create(colors.first, figure), [x, y])
+            y += 1
+          end
+        end
+      end
+    end
   end
 end
