@@ -6,10 +6,11 @@ require 'colorize'
 require 'pastel'
 
 class Board
-  attr_accessor :chessboard
+  attr_accessor :chessboard, :first_player_color
 
   def initialize
     @chessboard = Array.new(8) { Array.new(8, '') }
+    @first_player_color = nil
   end
 
   def display_chessboard

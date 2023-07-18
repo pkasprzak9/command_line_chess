@@ -3,20 +3,28 @@
 class Pawn < Piece
   def initialize(color)
     super(color, '♟')
-    @moves = [[1, 0], [-1, 0]]
-    @capturing_moves = [[1, 1], [1, -1], [-1, 1], [-1, -1]]
-    @first_moves = [[1, 0], [2, 0], [-1, 0], [-2, 0]]
+    @moves = [[-1, 0]]
+    @capturing_moves = [[-1, 1], [-1, -1]]
+    @first_moves = [[-1, 0], [-2, 0]]
     @first_move = true
   end
 
   def possible_moves(board)
     position = board.get_position(self)
     possible_moves = []
-
     moves = @first_move ? @first_moves : @moves
+    moves = assign_direction(moves, board)
     possible_moves += calculate_moves(board, position, moves)
     possible_moves += calculate_capturing_moves(board, position)
     possible_moves
+  end
+
+  def assign_direction(moves, board)
+    first_player_color = board.first_player_color
+    piece_color = @color
+    return moves if first_player_color == piece_color
+
+    moves.map! { |move| [-move[0], move[1]] }
   end
 
   def calculate_moves(board, position, moves)
@@ -35,7 +43,8 @@ class Pawn < Piece
 
   def calculate_capturing_moves(board, position)
     capturing_moves_result = []
-    @capturing_moves.each do |move|
+    capturing_moves = assign_direction(@capturing_moves, board)
+    capturing_moves.each do |move|
       x, y = position
       x += move[0]
       y += move[1]
