@@ -6,7 +6,7 @@ module GameLogic
     return unless valid_chessnotation?(position)
 
     col = position[0]
-    row = position[1]
+    row = 8 - position[1].to_i
     col = /[[:upper:]]/.match(col) ? (col.ord - 65) : (col.ord - 97)
     [row.to_i, col.to_i]
   end

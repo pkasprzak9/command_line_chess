@@ -9,8 +9,8 @@ describe Game do
       context 'when given a capital letter' do
         it 'returns the correct array' do
           allow(game).to receive(:valid_chessnotation?).and_return(true)
-          position = 'A1'
-          result = [1, 0]
+          position = 'A8'
+          result = [0, 0]
           expect(game.translate_chessnotation(position)).to eq(result)
         end
       end
@@ -19,7 +19,7 @@ describe Game do
         it 'returns the correct array' do
           allow(game).to receive(:valid_chessnotation?).and_return(true)
           position = 'a1'
-          result = [1, 0]
+          result = [7, 0]
           expect(game.translate_chessnotation(position)).to eq(result)
         end
       end
