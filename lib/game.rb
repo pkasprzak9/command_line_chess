@@ -2,6 +2,7 @@
 
 require_relative 'libraries'
 require_relative 'board'
+require_relative 'piece'
 require_relative 'modules/game_logic'
 require_relative 'modules/user_interface'
 
