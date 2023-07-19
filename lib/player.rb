@@ -1,7 +1,7 @@
 # frozen_string_literal: false
 
 class Player
-  attr_reader :name, :color
+  attr_reader :name, :color, :points
 
   def initialize(name, color)
     @name = name
