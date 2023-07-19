@@ -17,7 +17,7 @@ class Board
 
   def display_chessboard
     number = 8
-    letters = %w[a b c d e f g h]
+    letters = %w[A B C D E F G H]
     colors = %i[white black]
     chessboard.each do |chessboard_row|
       print "#{number} "
