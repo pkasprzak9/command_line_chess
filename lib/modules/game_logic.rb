@@ -1,7 +1,7 @@
 # frozen_string_literal: false
 
 module GameLogic
-  def translate_chessnotation(position)
+  def translate_from_chessnotation(position)
     position = position.split('')
     return unless valid_chessnotation?(position)
 
@@ -12,8 +12,16 @@ module GameLogic
     [row, col] if @board.valid_position?([row, col])
   end
 
+  def translate_to_chessnotation(position)
+    letters = ('A'..'H').to_a
+    numbers = (1..8).to_a
+    col = letters[position[1]]
+    row = numbers[7 - position[0]]
+    "#{col}#{row}"
+  end
+
   def move(piece, position)
-    position = translate_chessnotation(position)
+    position = translate_from_chessnotation(position)
     return unless position
 
     possible_moves = piece.possible_moves(@board)

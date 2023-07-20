@@ -6,8 +6,11 @@
 require 'colorize'
 require 'pastel'
 require_relative 'piece'
+require_relative 'modules/game_logic'
 
 class Board
+  include GameLogic
+
   attr_accessor :chessboard, :first_player_color
 
   def initialize
