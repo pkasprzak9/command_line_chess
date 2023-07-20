@@ -25,7 +25,10 @@ module GameLogic
     return unless position
 
     possible_moves = piece.possible_moves(@board)
-    move_piece(piece, position) if possible_moves.include?(position)
+    if possible_moves.include?(position)
+      move_piece(piece, position)
+      piece.first_move = false if piece.is_a?(Pawn)
+    end
   end
 
   private

@@ -1,6 +1,8 @@
 # frozen_string_literal: false
 
 class Pawn < Piece
+  attr_accessor :first_move
+
   def initialize(color)
     super(color, '♟')
     @moves = [[-1, 0]]
@@ -24,7 +26,7 @@ class Pawn < Piece
     piece_color = @color
     return moves if first_player_color == piece_color
 
-    moves.map! { |move| [-move[0], move[1]] }
+    moves.map { |move| [-move[0], move[1]] }
   end
 
   def calculate_moves(board, position, moves)
