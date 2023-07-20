@@ -34,7 +34,7 @@ class Pawn < Piece
       x += move[0]
       y += move[1]
       temp_position = [x, y]
-      break if board.valid_position?(temp_position) && board.occupied_by_friendly?(self, temp_position)
+      break if board.valid_position?(temp_position) && board.occupied?(temp_position)
 
       moves_result << temp_position if board.valid_position?(temp_position)
     end
