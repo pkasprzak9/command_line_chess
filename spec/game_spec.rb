@@ -81,4 +81,54 @@ describe Game do
       end
     end
   end
+
+  describe '#move' do
+    subject(:game) { described_class.new }
+    let(:board) { instance_double(Board) }
+    let(:piece) { instance_double(Piece) }
+    before do
+      game.instance_variable_set(:@board, board)
+    end
+    context 'when given a valid position' do
+      before do
+        allow(game).to receive(:translate_chessnotation).and_return([0, 0])
+        allow(piece).to receive(:possible_moves).and_return([[0, 0]])
+        allow(board).to receive(:get_position).and_return([0, 0])
+        allow(board).to receive(:remove_piece)
+        allow(board).to receive(:set_piece)
+      end
+
+      it 'translates the position' do
+        game.move(piece, 'A1')
+        expect(game).to have_received(:translate_chessnotation).with('A1')
+      end
+
+      it 'gets the possible moves of the piece' do
+        game.move(piece, 'A1')
+        expect(piece).to have_received(:possible_moves).with(board)
+      end
+
+      it 'removes the piece from its current position' do
+        game.move(piece, 'A1')
+        expect(board).to have_received(:remove_piece).with([0, 0])
+      end
+
+      it 'sets the piece at the new position' do
+        game.move(piece, 'A1')
+        expect(board).to have_received(:set_piece).with(piece, [0, 0])
+      end
+    end
+
+    context 'when given an invalid position' do
+      before do
+        allow(game).to receive(:translate_chessnotation).and_return(nil)
+      end
+
+      it 'does not attempt to move the piece' do
+        expect(board).not_to receive(:remove_piece)
+        expect(board).not_to receive(:set_piece)
+        game.move(piece, 'A9')
+      end
+    end
+  end
 end
