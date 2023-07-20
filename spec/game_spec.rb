@@ -3,7 +3,7 @@
 require_relative '../lib/game'
 
 describe Game do
-  describe '#translate_chessnotation' do
+  describe '#translate_from_chessnotation' do
     subject(:game) { described_class.new }
     context 'when given a valid chess notation' do
       context 'when given a capital letter' do
@@ -11,7 +11,7 @@ describe Game do
           allow(game).to receive(:valid_chessnotation?).and_return(true)
           position = 'A8'
           result = [0, 0]
-          expect(game.translate_chessnotation(position)).to eq(result)
+          expect(game.translate_from_chessnotation(position)).to eq(result)
         end
       end
 
@@ -20,7 +20,7 @@ describe Game do
           allow(game).to receive(:valid_chessnotation?).and_return(true)
           position = 'a1'
           result = [7, 0]
-          expect(game.translate_chessnotation(position)).to eq(result)
+          expect(game.translate_from_chessnotation(position)).to eq(result)
         end
       end
     end
@@ -29,7 +29,7 @@ describe Game do
       it 'returns nil' do
         allow(game).to receive(:valid_chessnotation?).and_return(false)
         position = 'A9'
-        expect(game.translate_chessnotation(position)).to be_nil
+        expect(game.translate_from_chessnotation(position)).to be_nil
       end
     end
   end
@@ -91,7 +91,7 @@ describe Game do
     end
     context 'when given a valid position' do
       before do
-        allow(game).to receive(:translate_chessnotation).and_return([0, 0])
+        allow(game).to receive(:translate_from_chessnotation).and_return([0, 0])
         allow(piece).to receive(:possible_moves).and_return([[0, 0]])
         allow(board).to receive(:get_position).and_return([0, 0])
         allow(board).to receive(:remove_piece)
@@ -100,7 +100,7 @@ describe Game do
 
       it 'translates the position' do
         game.move(piece, 'A1')
-        expect(game).to have_received(:translate_chessnotation).with('A1')
+        expect(game).to have_received(:translate_from_chessnotation).with('A1')
       end
 
       it 'gets the possible moves of the piece' do
@@ -121,7 +121,7 @@ describe Game do
 
     context 'when given an invalid position' do
       before do
-        allow(game).to receive(:translate_chessnotation).and_return(nil)
+        allow(game).to receive(:translate_from_chessnotation).and_return(nil)
       end
 
       it 'does not attempt to move the piece' do
