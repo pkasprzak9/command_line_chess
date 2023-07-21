@@ -27,12 +27,15 @@ module GameLogic
     possible_moves = piece.possible_moves(@board)
     return unless possible_moves.include?(position)
 
-    move_piece(piece, position)
+    if @board.occupied_by_opponent?(piece, position)
+      capture(piece, position)
+    else
+      move_piece(piece, position)
+    end
     piece.first_move = false if piece.is_a?(Pawn)
   end
 
   def capture(piece, position)
-    position = translate_from_chessnotation(position)
     opponent_piece = @board.get_piece(position)
     current_position = @board.get_position(piece)
     possible_moves = piece.possible_moves(@board)
