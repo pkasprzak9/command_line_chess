@@ -21,9 +21,6 @@ module GameLogic
   end
 
   def move(piece, position)
-    position = translate_from_chessnotation(position)
-    return unless position
-
     possible_moves = piece.possible_moves(@board)
     return unless possible_moves.include?(position)
 
