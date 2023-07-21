@@ -3,9 +3,11 @@
 require 'pastel'
 require_relative './board'
 require_relative './modules/game_logic'
+require_relative './modules/user_interface'
 
 class Piece
   include GameLogic
+  include UserInterface
 
   attr_reader :color, :figure, :moves
 
@@ -33,14 +35,6 @@ class Piece
       possible_moves << temp_position if board.valid_position?(temp_position)
     end
     possible_moves
-  end
-
-  def print_possible_moves(board)
-    moves = possible_moves(board)
-    moves.map! do |move|
-      translate_to_chessnotation(move)
-    end
-    p moves
   end
 
   def to_s

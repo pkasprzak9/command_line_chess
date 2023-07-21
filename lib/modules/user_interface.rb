@@ -13,6 +13,15 @@ module UserInterface
     end
   end
 
+  # This method prints the possible moves of a piece in chessnotation.
+  def print_possible_moves(board)
+    moves = possible_moves(board)
+    moves.map! do |move|
+      translate_to_chessnotation(move)
+    end
+    p moves
+  end
+
   private
 
   def valid_name?(name)
