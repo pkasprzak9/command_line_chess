@@ -40,6 +40,7 @@ class Piece
     moves.map! do |move|
       translate_to_chessnotation(move)
     end
+    p moves
   end
 
   def to_s
