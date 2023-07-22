@@ -99,7 +99,24 @@ class Board
     place_figures(colors)
   end
 
+  def display_possible_moves(possible_moves, color)
+    pastel = Pastel.new
+    color = pastel.lookup(color.to_sym)
+    temps = {}
+    possible_moves.each do |possible_move|
+      next if get_piece(possible_move).is_a?(King)
+
+      x, y = possible_move
+      temps[[x, y]] = @chessboard[x][y]
+      circle = "#{color}●\e[0m"
+      @chessboard[x][y] = circle
+    end
+    display_chessboard
+    restore_chessboard(temps)
+  end
+
   private
+
 
   def black(input)
     pastel = Pastel.new
@@ -141,6 +158,12 @@ class Board
           end
         end
       end
+    end
+  end
+
+  def restore_chessboard(temps)
+    temps.each do |position, piece|
+      @chessboard[position[0]][position[1]] = piece
     end
   end
 end
