@@ -54,6 +54,14 @@ class Board
     nil
   end
 
+  def get_king(color)
+    @chessboard.each_with_index do |chessboard_row, x|
+      chessboard_row.each_with_index do |chessboard_cell, y|
+        return get_piece([x, y]) if chessboard_cell.is_a?(King) && chessboard_cell.color == color
+      end
+    end
+  end
+
   def valid_position?(position)
     x, y = position
     x.between?(0, 7) && y.between?(0, 7)
