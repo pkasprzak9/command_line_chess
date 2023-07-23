@@ -7,36 +7,17 @@ require 'colorize'
 require 'pastel'
 require_relative 'piece'
 require_relative 'modules/game_logic'
+require_relative 'modules/user_interface'
 
 class Board
   include GameLogic
+  include UserInterface
 
   attr_accessor :chessboard, :first_player_color
 
   def initialize
     @chessboard = Array.new(8) { Array.new(8, '') }
     @first_player_color = nil
-  end
-
-  def display_chessboard
-    number = 8
-    letters = %w[A B C D E F G H]
-    colors = %i[white black]
-    chessboard.each do |chessboard_row|
-      print "#{number} "
-      chessboard_row.each do |chessboard_cell|
-        if chessboard_cell == ''
-          send(colors.first, '   ')
-        else
-          send(colors.first, " #{chessboard_cell} ")
-        end
-        colors.rotate!
-      end
-      number -= 1
-      colors.rotate!
-      puts
-    end
-    puts "   #{letters.join('  ')}"
   end
 
   def set_piece(piece, position)
@@ -97,22 +78,6 @@ class Board
     @first_player_color = colors.first
     place_pawns(colors)
     place_figures(colors)
-  end
-
-  def display_possible_moves(possible_moves, color)
-    pastel = Pastel.new
-    color = pastel.lookup(color.to_sym)
-    temps = {}
-    possible_moves.each do |possible_move|
-      next if get_piece(possible_move).is_a?(King)
-
-      x, y = possible_move
-      temps[[x, y]] = @chessboard[x][y]
-      circle = "#{color}●\e[0m"
-      @chessboard[x][y] = circle
-    end
-    display_chessboard
-    restore_chessboard(temps)
   end
 
   private
