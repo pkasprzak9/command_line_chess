@@ -45,14 +45,6 @@ module GameLogic
     @board.set_piece(piece, position)
   end
 
-  def check?(piece)
-    opponent_color = piece.color == 'blue' ? 'red' : 'blue'
-    opponent_king = @board.get_king(opponent_color)
-    opponent_king_position = @board.get_position(opponent_king)
-    possible_moves = piece.possible_moves(@board)
-    possible_moves.include?(opponent_king_position)
-  end
-
   private
 
   def valid_chessnotation?(position)
