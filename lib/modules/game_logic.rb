@@ -47,15 +47,16 @@ module GameLogic
   end
 
 # TODO: SEE IF YOU NEED BOARD AS ARGUMENT
-  def mate?(board, piece)
-    position = board.get_position(piece)
-    return false unless piece.checked?(board, position)
+  def mate?(player)
+    piece = @board.get_king(player.color)
+    position = @board.get_position(piece)
+    return false unless piece.checked?(@board, position)
 
-    possible_moves = piece.possible_moves(board)
+    possible_moves = piece.possible_moves(@board)
     possible_moves.each do |move|
-      return false unless piece.checked?(board, move)
+      return false unless piece.checked?(@board, move)
     end
-    true unless defend_king?(board, piece)
+    true unless defend_king?(@board, piece)
     false
   end
 
