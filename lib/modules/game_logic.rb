@@ -46,6 +46,7 @@ module GameLogic
     @board.set_piece(piece, position)
   end
 
+# TODO: SEE IF YOU NEED BOARD AS ARGUMENT
   def mate?(board, piece)
     position = board.get_position(piece)
     return false unless piece.checked?(board, position)
@@ -58,7 +59,34 @@ module GameLogic
     false
   end
 
+  def castling(piece)
+    king = piece
+    king_position = @board.get_position(king)
+    return unless castling?(king)
+
+    rook = @board.get_piece([king_position[0], king_position[1] + 3])
+    rook_position = @board.get_position(rook)
+    @board.remove_piece(king_position)
+    @board.remove_piece(rook_position)
+    @board.set_piece(king, [king_position[0], king_position[1] + 2])
+    @board.set_piece(rook, [rook_position[0], rook_position[1] - 2])
+  end
+
   private
+
+  def castling?(piece)
+    king = piece
+    king_position = @board.get_position(king)
+    empty_positions = [[king_position[0], king_position[1] + 1], [king_position[0], king_position[1] + 2]]
+    return false unless [[0, 4], [7, 4]].include?(king_position)
+
+    return false unless empty_positions.all? { |position| @board.chessboard[position[0]][position[1]] == '' }
+
+    rook = @board.get_piece([king_position[0], king_position[1] + 3])
+    return false unless king.first_move == true && rook.first_move == true
+
+    true
+  end
 
   def defend_king?(board, piece)
     checking_piece = get_checking_piece(board, piece)

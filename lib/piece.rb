@@ -10,6 +10,7 @@ class Piece
   include UserInterface
 
   attr_reader :color, :figure, :moves
+  attr_accessor :first_move
 
   def initialize(color, figure = nil, moves = nil)
     @color = color
