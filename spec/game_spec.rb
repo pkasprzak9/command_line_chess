@@ -91,6 +91,7 @@ describe Game do
     end
     context 'when given a valid position' do
       before do
+        allow(piece).to receive(:first_move=).and_return(false)
         allow(game).to receive(:translate_from_chessnotation).and_return([0, 0])
         allow(piece).to receive(:possible_moves).and_return([[0, 0]])
         allow(board).to receive(:get_position).and_return([0, 0])
