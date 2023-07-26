@@ -8,7 +8,6 @@ class Pawn < Piece
     @moves = [[-1, 0]]
     @capturing_moves = [[-1, 1], [-1, -1]]
     @first_moves = [[-1, 0], [-2, 0]]
-    @first_move = true
   end
 
   def possible_moves(board)

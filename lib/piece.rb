@@ -15,6 +15,7 @@ class Piece
     @color = color
     @figure = Pastel.new.send(color.to_sym, figure)
     @moves = moves
+    @first_move = true
   end
 
   def self.create(color, figure)

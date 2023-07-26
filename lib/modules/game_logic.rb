@@ -29,10 +29,8 @@ module GameLogic
     else
       move_piece(piece, position)
     end
-    return unless piece.is_a?(Pawn)
-
     piece.first_move = false
-    promote_pawn(piece) if pawn_promotion?(piece)
+    (promote_pawn(piece) if pawn_promotion?(piece)) if piece.is_a?(Pawn)
   end
 
   def capture(piece, position)
