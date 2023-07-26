@@ -16,6 +16,7 @@ class Game
 
   def initialize(board = Board.new)
     @board = board
+    @winner = nil
     @players = []
   end
 
@@ -28,5 +29,17 @@ class Game
     create_players
     board.prepare_chessboard(players.map(&:color))
     board.display_chessboard
+  end
+
+  def play
+    prepare_game
+    loop do
+      players.each do |player|
+        player_turn(player)
+        break if mate?(player)
+
+        board.display_chessboard
+      end
+    end
   end
 end
