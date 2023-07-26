@@ -13,6 +13,10 @@ module UserInterface
     end
   end
 
+  def display_promotion_menu
+    message("Choose a piece to promote your pawn:\n1. Queen\n2. Rook\n3. Bishop\n4. Knight\n")
+  end
+
   # BOARD DISPLAY METHODS
 
   # This method prints the possible moves of a piece in chessnotation.
@@ -65,5 +69,13 @@ module UserInterface
 
   def valid_name?(name)
     !name.empty?
+  end
+
+  def message(message)
+    puts Pastel.new.blue.bold(message)
+  end
+
+  def error(message)
+    puts Pastel.new.red.bold(message)
   end
 end

@@ -29,7 +29,10 @@ module GameLogic
     else
       move_piece(piece, position)
     end
-    piece.first_move = false if piece.is_a?(Pawn)
+    return unless piece.is_a?(Pawn)
+
+    piece.first_move = false
+    promote_pawn(piece) if pawn_promotion?(piece)
   end
 
   def capture(piece, position)
@@ -119,5 +122,31 @@ module GameLogic
     piece_position = @board.get_position(piece)
     @board.remove_piece(piece_position)
     @board.set_piece(piece, position)
+  end
+
+  def pawn_promotion?(piece)
+    position = @board.get_position(piece)
+    approved_rows = [0, 7]
+    true if approved_rows.include?(position[0])
+  end
+
+  def promote_pawn(pawn)
+    position = @board.get_position(pawn)
+    figures = { '1' => 'Queen', '2' => 'Rook', '3' => 'Bishop', '4' => 'Knight' }
+    display_promotion_menu
+    figure = verify_input(gets.chomp, figures.keys)
+    figure = figures[figure]
+    @board.remove_piece(position)
+    figure = Piece.create(pawn.color, figure)
+    @board.set_piece(figure, position)
+  end
+
+  def verify_input(input, verified_input)
+    loop do
+      return input if verified_input.include?(input)
+
+      error('Invalid input, please try again.')
+      input = gets.chomp
+    end
   end
 end
