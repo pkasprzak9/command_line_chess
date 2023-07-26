@@ -4,12 +4,12 @@
 
 module UserInterface
   def set_name(player)
-    puts "#{player}, please enter your name:"
+    message("#{player}, please enter your name:")
     loop do
       name = gets.chomp
       return name if valid_name?(name)
 
-      puts 'Invalid name, please try again.'
+      error('Invalid name, please try again.')
     end
   end
 
