@@ -61,8 +61,9 @@ module GameLogic
 
   def castling(piece)
     king = piece
+    king_approved_positions = [[0, 4], [7, 4]]
     king_position = @board.get_position(king)
-    return unless castling?(king)
+    return unless castling?(king) && king_approved_positions.include?(king_position)
 
     rook = @board.get_piece([king_position[0], king_position[1] + 3])
     rook_position = @board.get_position(rook)
@@ -79,6 +80,8 @@ module GameLogic
     king_position = @board.get_position(king)
     empty_positions = [[king_position[0], king_position[1] + 1], [king_position[0], king_position[1] + 2]]
     return false unless [[0, 4], [7, 4]].include?(king_position)
+
+    return false if king.checked?(@board, [king_position[0], king_position[1] + 2]) || king.checked?(@board, [king_position[0], king_position[1] + 1])
 
     return false unless empty_positions.all? { |position| @board.chessboard[position[0]][position[1]] == '' }
 
