@@ -60,36 +60,49 @@ module GameLogic
   private
 
   def defend_king?(board, piece)
-    checking_piece = get_checking_pieces(board, piece)
+    checking_piece = get_checking_piece(board, piece)
     my_pieces = board.get_pieces(piece.color)
     checking_squares = get_checking_squares(board, piece)
     my_pieces.each do |my_piece|
       next if my_piece == piece
 
-      return true if my_piece.possible_moves(board).include?(board.get_position(checking_piece)) && checking_squares.include?(board.get_position(my_piece))
+      piece_can_move_to_checking_piece = my_piece.possible_moves(board).include?(board.get_position(checking_piece))
+      piece_is_on_checking_square = checking_squares.include?(board.get_position(my_piece))
+
+      return true if piece_can_move_to_checking_piece || piece_is_on_checking_square
     end
     false
   end
 
   def get_checking_squares(board, piece)
-    checking_piece = get_checking_pieces(board, piece)
-    temp_position = board.get_position(checking_piece)
+    checking_piece = get_checking_piece(board, piece)
+    checking_piece_position = board.get_position(checking_piece)
     checking_squares = []
     checking_squares << board.get_position(checking_piece)
-    direction = [temp_position[0] - board.get_position(piece)[0], temp_position[1] - board.get_position(piece)[1]]
-    direction[0] = direction[0].positive? ? 1 : -1 if direction[0] != 0
-    direction[1] = direction[1].positive? ? 1 : -1 if direction[1] != 0
+    direction = calculate_direction(board, piece, checking_piece_position)
     checking_piece.possible_moves(board).each do |move|
-      next unless move[0] == temp_position[0] + direction[0] && move[1] == temp_position[1] + direction[1]
+      next_move_position = [checking_piece_position[0] + direction[:row], checking_piece_position[1] + direction[:col]]
+
+      next unless move == next_move_position
 
       move(checking_piece, move)
       checking_squares << move if piece.checked?(board, board.get_position(piece))
-      move(checking_piece, temp_position)
+      move(checking_piece, checking_piece_position)
     end
     checking_squares
   end
 
-  def get_checking_pieces(board, piece)
+  def calculate_direction(board, piece, checking_piece_position)
+    direction_row = checking_piece_position[0] - board.get_position(piece)[0]
+    direction_col = checking_piece_position[1] - board.get_position(piece)[1]
+
+    direction_row = direction_row.positive? ? 1 : -1 if direction_row != 0
+    direction_col = direction_col.positive? ? 1 : -1 if direction_col != 0
+
+    { row: direction_row, col: direction_col }
+  end
+
+  def get_checking_piece(board, piece)
     opponent_color = piece.color == 'blue' ? 'red' : 'blue'
     opponent_pieces = board.get_pieces(opponent_color)
     position = board.get_position(piece)
@@ -99,9 +112,7 @@ module GameLogic
   end
 
   def valid_chessnotation?(position)
-    if position.length == 2 && (position[0].match?(/[A-H]/) || position[0].match?(/[a-h]/)) && position[1].match?(/[1-8]/)
-      true
-    end
+    position.match?(/^[A-Ha-h][1-8]$/)
   end
 
   def move_piece(piece, position)
