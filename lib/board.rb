@@ -45,6 +45,16 @@ class Board
     @chessboard[x][y] if valid_position?(position)
   end
 
+  def get_pieces(color)
+    pieces = []
+    chessboard.each do |chessboard_row|
+      chessboard_row.each do |chessboard_cell|
+        pieces << chessboard_cell if chessboard_cell != '' && chessboard_cell.color == color
+      end
+    end
+    pieces
+  end
+
   def get_position(piece)
     @chessboard.each_with_index do |chessboard_row, x|
       chessboard_row.each_with_index do |chessboard_cell, y|
