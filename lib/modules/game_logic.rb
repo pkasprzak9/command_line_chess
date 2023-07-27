@@ -37,6 +37,20 @@ module GameLogic
     piece
   end
 
+  def select_square_by_position(piece)
+    possible_moves = piece.possible_moves(@board)
+    position = gets.chomp
+
+    return unless valid_chessnotation?(position)
+
+    position = translate_from_chessnotation(position)
+    return unless position
+
+    return unless possible_moves.include?(position)
+
+    position
+  end
+
   def move(piece, position)
     possible_moves = piece.possible_moves(@board)
     return unless possible_moves.include?(position)
