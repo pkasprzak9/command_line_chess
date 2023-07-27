@@ -28,7 +28,6 @@ class Game
   def prepare_game
     create_players
     board.prepare_chessboard(players.map(&:color))
-    board.display_chessboard
   end
 
   def play
@@ -36,10 +35,9 @@ class Game
     prepare_game
     loop do
       players.each do |player|
+        board.display_chessboard
         player_turn(player)
         break if mate?(player)
-
-        board.display_chessboard
       end
     end
   end
