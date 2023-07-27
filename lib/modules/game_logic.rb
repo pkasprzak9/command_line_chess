@@ -85,6 +85,7 @@ module GameLogic
 
   def move(piece, position)
     possible_moves = piece.possible_moves(@board)
+    return if @board.occupied_by_friendly?(piece, position)
     return unless possible_moves.include?(position)
 
     if @board.occupied_by_opponent?(piece, position)
@@ -117,7 +118,8 @@ module GameLogic
     possible_moves.each do |move|
       return false unless piece.checked?(@board, move)
     end
-    true unless defend_king?(@board, piece)
+    return true unless defend_king?(@board, piece)
+
     false
   end
 
@@ -156,14 +158,17 @@ module GameLogic
   def defend_king?(board, piece)
     checking_piece = get_checking_piece(board, piece)
     my_pieces = board.get_pieces(piece.color)
+    my_pieces.each do |my_piece|
+    end
     checking_squares = get_checking_squares(board, piece)
     my_pieces.each do |my_piece|
       next if my_piece == piece
 
       piece_can_move_to_checking_piece = my_piece.possible_moves(board).include?(board.get_position(checking_piece))
+      piece_can_capture_checking_piece = my_piece.possible_moves(board).include?(board.get_position(checking_piece))
       piece_is_on_checking_square = checking_squares.include?(board.get_position(my_piece))
 
-      return true if piece_can_move_to_checking_piece || piece_is_on_checking_square
+      return true if piece_can_move_to_checking_piece || piece_is_on_checking_square || piece_can_capture_checking_piece
     end
     false
   end
@@ -197,7 +202,7 @@ module GameLogic
   end
 
   def get_checking_piece(board, piece)
-    opponent_color = piece.color == 'blue' ? 'red' : 'blue'
+    opponent_color = piece.color == :blue ? 'red' : 'blue'
     opponent_pieces = board.get_pieces(opponent_color)
     position = board.get_position(piece)
     opponent_pieces.each do |opponent_piece|

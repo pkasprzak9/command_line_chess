@@ -16,7 +16,7 @@ class King < Piece
   end
 
   def checked?(board, position)
-    opponent_color = @color == :red ? :blue : :red
+    opponent_color = @color == :red ? 'blue' : 'red'
     opponent_pieces = board.get_pieces(opponent_color)
     opponent_pieces.each do |piece|
       next if piece.is_a?(King)

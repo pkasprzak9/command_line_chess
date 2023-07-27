@@ -32,7 +32,7 @@ class Piece
       x += move[0]
       y += move[1]
       temp_position = [x, y]
-      next if board.valid_position?(temp_position) && board.occupied_by_friendly?(self, temp_position)
+      next if board.valid_position?(temp_position)
 
       possible_moves << temp_position if board.valid_position?(temp_position)
     end
