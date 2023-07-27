@@ -24,6 +24,10 @@ module UserInterface
     message(message)
   end
 
+  def display_end_game_message(player)
+    message("#{player.name} wins!")
+  end
+
   def display_turn_info(player)
     message("#{player.name}, it's your turn!")
   end
