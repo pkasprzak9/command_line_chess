@@ -37,6 +37,33 @@ module GameLogic
     piece
   end
 
+  def select_piece(player)
+    loop do
+      piece = select_piece_by_position(player)
+      if piece.nil?
+        display_invalid_piece
+      else
+        possible_moves = piece.possible_moves(board)
+        return piece if piece && !possible_moves.empty?
+
+        display_piece_cannot_move if possible_moves.empty?
+      end
+    end
+  end
+
+  def select_square(piece)
+    display_select_position_message(piece)
+    loop do
+      square = select_square_by_position(piece)
+      return square if square
+
+      positions = piece.possible_moves(board)
+      positions.map! { |position| translate_to_chessnotation(position) }
+
+      display_invalid_square(positions)
+    end
+  end
+
   def select_square_by_position(piece)
     possible_moves = piece.possible_moves(@board)
     position = gets.chomp

@@ -5,6 +5,7 @@ require_relative 'board'
 require_relative 'piece'
 require_relative 'modules/game_logic'
 require_relative 'modules/user_interface'
+require 'pry-byebug'
 
 class Game
   include GameLogic
@@ -43,37 +44,18 @@ class Game
   end
 
   def player_turn(player)
-    display_turn_info(player)
-    piece = select_piece(player)
-    display_possible_moves(piece.possible_moves(board), player.color)
-    position = select_square(piece)
-    move(piece, position)
-  end
-
-  def select_piece(player)
     loop do
-      piece = select_piece_by_position(player)
-      if piece.nil?
-        display_invalid_piece
-      else
-        possible_moves = piece.possible_moves(board)
-        return piece if piece && !possible_moves.empty?
+      display_turn_info(player)
+      piece = select_piece(player)
+      display_possible_moves(piece.possible_moves(board), player.color)
+      position = select_square(piece)
+      move(piece, position)
+      king = @board.get_king(player.color)
+      break unless king.checked?(@board, @board.get_position(king))
 
-        display_piece_cannot_move if possible_moves.empty?
-      end
-    end
-  end
-
-  def select_square(piece)
-    display_select_position_message(piece)
-    loop do
-      square = select_square_by_position(piece)
-      return square if square
-
-      positions = piece.possible_moves(board)
-      positions.map! { |position| translate_to_chessnotation(position) }
-
-      display_invalid_square(positions)
+      x, y = @board.get_position(piece)
+      @board.chessboard[x, y] = piece
+      display_check_message(player)
     end
   end
 end
