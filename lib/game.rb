@@ -33,7 +33,7 @@ class Game
   def play
     display_welcome_message
     prepare_game
-    loop do
+    until @winner
       players.each do |player|
         board.display_chessboard
         player_turn(player)
