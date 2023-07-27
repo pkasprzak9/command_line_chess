@@ -78,7 +78,7 @@ module GameLogic
   end
 
   def mate?(player)
-    piece = @board.get_king(player.color)
+    piece = @board.get_king(player.color.to_s)
     position = @board.get_position(piece)
     return false unless piece.checked?(@board, position)
 
