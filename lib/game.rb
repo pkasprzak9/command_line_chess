@@ -12,6 +12,7 @@ class Game
   include UserInterface
 
   attr_reader :players, :board
+  attr_accessor :winner
 
   COLORS = %i[red blue].freeze
 
@@ -38,16 +39,17 @@ class Game
       players.each do |player|
         board.display_chessboard
         player_turn(player)
-        break if mate?(player)
+        break if @winner
       end
     end
+    board.display_chessboard
+    display_end_game_message(@winner)
   end
 
   def player_turn(player)
     display_turn_info(player)
     king = @board.get_king(player.color)
     if king.checked?(board, @board.get_position(king))
-      end_game(player) if mate?(player)
       temp = @board.chessboard.map(&:clone)
       loop do
         display_check_message(player)
@@ -69,10 +71,6 @@ class Game
       move(piece, position)
       piece.first_move = false
     end
-  end
-
-  def end_game(player)
-    @winner = player
-    display_end_game_message(player)
+    @winner = player if mate?(@players[1 - @players.index(player)])
   end
 end
