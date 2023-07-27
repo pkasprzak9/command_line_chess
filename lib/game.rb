@@ -55,11 +55,14 @@ class Game
   def select_piece(player)
     loop do
       piece = select_piece_by_position(player)
-      possible_moves = piece.possible_moves(board)
-      return piece if piece && !possible_moves.empty?
+      if piece.nil?
+        display_invalid_piece
+      else
+        possible_moves = piece.possible_moves(board)
+        return piece if piece && !possible_moves.empty?
 
-      display_piece_cannot_move if possible_moves.empty?
-      display_invalid_piece unless possible_moves.empty?
+        display_piece_cannot_move if possible_moves.empty?
+      end
     end
   end
 
