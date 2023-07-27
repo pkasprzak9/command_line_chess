@@ -70,4 +70,9 @@ class Game
       piece.first_move = false
     end
   end
+
+  def end_game(player)
+    @winner = player
+    display_end_game_message(player)
+  end
 end
