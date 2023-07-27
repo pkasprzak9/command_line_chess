@@ -30,7 +30,7 @@ module GameLogic
     return unless position
 
     piece = @board.get_piece(position)
-    return unless piece
+    return if piece == ''
 
     return unless piece.color == color
 
