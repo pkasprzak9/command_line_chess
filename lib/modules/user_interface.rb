@@ -26,6 +26,9 @@ module UserInterface
 
   def display_turn_info(player)
     message("#{player.name}, it's your turn!")
+  end
+
+  def display_select_piece_message
     input('Select a piece to move: ')
   end
 

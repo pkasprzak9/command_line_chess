@@ -10,7 +10,7 @@ class Pawn < Piece
     @first_moves = [[-1, 0], [-2, 0]]
   end
 
-  def possible_moves(board)
+  def possible_moves(board, check_for_checks: true)
     position = board.get_position(self)
     possible_moves = []
     moves = @first_move ? @first_moves : @moves

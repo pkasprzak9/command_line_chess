@@ -24,7 +24,7 @@ class Piece
     klass.new(color)
   end
 
-  def possible_moves(board)
+  def possible_moves(board, check_for_checks: true)
     position = board.get_position(self)
     possible_moves = []
     @moves.each do |move|

@@ -39,17 +39,22 @@ module GameLogic
 
   def select_piece(player)
     loop do
+      display_select_piece_message
       piece = select_piece_by_position(player)
-      if piece.nil?
-        display_invalid_piece
-      else
+      if piece
+        puts "Selected piece: #{piece}"  # Debug output
         possible_moves = piece.possible_moves(board)
-        return piece if piece && !possible_moves.empty?
-
-        display_piece_cannot_move if possible_moves.empty?
+        if possible_moves.empty?
+          display_piece_cannot_move
+        else
+          return piece
+        end
+      else
+        display_invalid_piece
       end
     end
   end
+
 
   def select_square(piece)
     display_select_position_message(piece)
