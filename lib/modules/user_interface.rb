@@ -49,6 +49,10 @@ module UserInterface
     message("Select a square to move #{piece.class}")
   end
 
+  def display_check_message(player)
+    message("#{player.name}, you're in check!")
+  end
+
   # BOARD DISPLAY METHODS
 
   # This method prints the possible moves of a piece in chessnotation.
