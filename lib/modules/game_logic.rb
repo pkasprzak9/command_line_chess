@@ -2,9 +2,9 @@
 
 module GameLogic
   def translate_from_chessnotation(position)
-    position = position.split('')
     return unless valid_chessnotation?(position)
 
+    position = position.split('')
     col = position[0]
     row = 8 - position[1].to_i
     col = /[[:upper:]]/.match(col) ? (col.ord - 65) : (col.ord - 97)
@@ -18,6 +18,23 @@ module GameLogic
     col = letters[position[1]]
     row = numbers[7 - position[0]]
     "#{col}#{row}"
+  end
+
+  def select_piece_by_position(player)
+    color = player.color
+    position = gets.chomp
+
+    return unless valid_chessnotation?(position)
+
+    position = translate_from_chessnotation(position)
+    return unless position
+
+    piece = @board.get_piece(position)
+    return unless piece
+
+    return unless piece.color == color
+
+    piece
   end
 
   def move(piece, position)
@@ -46,7 +63,6 @@ module GameLogic
     @board.set_piece(piece, position)
   end
 
-# TODO: SEE IF YOU NEED BOARD AS ARGUMENT
   def mate?(player)
     piece = @board.get_king(player.color)
     position = @board.get_position(piece)
