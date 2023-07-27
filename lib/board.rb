@@ -49,7 +49,7 @@ class Board
     pieces = []
     chessboard.each do |chessboard_row|
       chessboard_row.each do |chessboard_cell|
-        pieces << chessboard_cell if chessboard_cell != '' && chessboard_cell.color == color
+        pieces << chessboard_cell if chessboard_cell != '' && chessboard_cell.color == color.to_sym
       end
     end
     pieces
