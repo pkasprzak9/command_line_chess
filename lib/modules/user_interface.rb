@@ -41,6 +41,14 @@ module UserInterface
     error('This piece cannot move, please try again.')
   end
 
+  def display_invalid_square(positions)
+    error("Invalid position, please try again.\n Valid positions: #{positions.join(', ')}")
+  end
+
+  def display_select_position_message(piece)
+    message("Select a square to move #{piece.class}")
+  end
+
   # BOARD DISPLAY METHODS
 
   # This method prints the possible moves of a piece in chessnotation.
