@@ -32,6 +32,7 @@ class Game
   end
 
   def play
+    display_welcome_message
     prepare_game
     loop do
       players.each do |player|
@@ -40,6 +41,38 @@ class Game
 
         board.display_chessboard
       end
+    end
+  end
+
+  def player_turn(player)
+    display_turn_info(player)
+    piece = select_piece(player)
+    display_possible_moves(piece.possible_moves(board), player.color)
+    position = select_square(piece)
+    move(piece, position)
+  end
+
+  def select_piece(player)
+    loop do
+      piece = select_piece_by_position(player)
+      possible_moves = piece.possible_moves(board)
+      return piece if piece && !possible_moves.empty?
+
+      display_piece_cannot_move if possible_moves.empty?
+      display_invalid_piece unless possible_moves.empty?
+    end
+  end
+
+  def select_square(piece)
+    display_select_position_message(piece)
+    loop do
+      square = select_square_by_position(piece)
+      return square if square
+
+      positions = piece.possible_moves(board)
+      positions.map! { |position| translate_to_chessnotation(position) }
+
+      display_invalid_square(positions)
     end
   end
 end
