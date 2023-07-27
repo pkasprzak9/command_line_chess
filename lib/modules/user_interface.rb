@@ -50,7 +50,7 @@ module UserInterface
   end
 
   def display_check_message(player)
-    message("#{player.name}, you're in check!")
+    error("#{player.name}, you're in check!\nYou must move your king out of check.")
   end
 
   # BOARD DISPLAY METHODS
