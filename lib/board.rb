@@ -98,6 +98,12 @@ class Board
     place_figures(colors)
   end
 
+  def restore_chessboard(temps)
+    temps.each do |position, piece|
+      @chessboard[position[0]][position[1]] = piece
+    end
+  end
+
   private
 
 
@@ -141,12 +147,6 @@ class Board
           end
         end
       end
-    end
-  end
-
-  def restore_chessboard(temps)
-    temps.each do |position, piece|
-      @chessboard[position[0]][position[1]] = piece
     end
   end
 end
