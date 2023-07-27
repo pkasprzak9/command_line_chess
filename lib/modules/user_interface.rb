@@ -4,7 +4,7 @@
 
 module UserInterface
   def set_name(player)
-    message("#{player}, please enter your name:")
+    input("#{player}, please enter your name: ")
     loop do
       name = gets.chomp
       return name if valid_name?(name)
@@ -13,8 +13,32 @@ module UserInterface
     end
   end
 
+  # DISPLAY MESSAGE METHODS
+
+  def display_welcome_message
+    message = <<~HEREDOC
+      Welcome to Chess!
+      This is a two-player game.
+      You'll be asked to enter your names and then you can start playing.
+    HEREDOC
+    message(message)
+  end
+
+  def display_turn_info(player)
+    message("#{player.name}, it's your turn!")
+    input('Select a piece to move: ')
+  end
+
   def display_promotion_menu
-    message("Choose a piece to promote your pawn:\n1. Queen\n2. Rook\n3. Bishop\n4. Knight\n")
+    input("Choose a piece to promote your pawn:\n1. Queen\n2. Rook\n3. Bishop\n4. Knight\n")
+  end
+
+  def display_invalid_piece
+    error('Invalid piece, please try again.')
+  end
+
+  def display_piece_cannot_move
+    error('This piece cannot move, please try again.')
   end
 
   # BOARD DISPLAY METHODS
@@ -54,15 +78,15 @@ module UserInterface
     color = pastel.lookup(color.to_sym)
     temps = {}
     possible_moves.each do |possible_move|
-      next if get_piece(possible_move).is_a?(King)
+      next if @board.get_piece(possible_move).is_a?(King)
 
       x, y = possible_move
-      temps[[x, y]] = @chessboard[x][y]
+      temps[[x, y]] = @board.chessboard[x][y]
       circle = "#{color}●\e[0m"
-      @chessboard[x][y] = circle
+      @board.chessboard[x][y] = circle
     end
-    display_chessboard
-    restore_chessboard(temps)
+    @board.display_chessboard
+    @board.restore_chessboard(temps)
   end
 
   private
@@ -77,5 +101,9 @@ module UserInterface
 
   def error(message)
     puts Pastel.new.red.bold(message)
+  end
+
+  def input(message)
+    puts Pastel.new.green.bold(message)
   end
 end
