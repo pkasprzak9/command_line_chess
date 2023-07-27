@@ -14,4 +14,19 @@ class King < Piece
     end
     false
   end
+
+  def possible_moves(board)
+    position = board.get_position(self)
+    possible_moves = []
+    @moves.each do |move|
+      x, y = position
+      x += move[0]
+      y += move[1]
+      temp_position = [x, y]
+      next if board.valid_position?(temp_position) && board.occupied_by_friendly?(self, temp_position) || checked?(board, temp_position)
+
+      possible_moves << temp_position if board.valid_position?(temp_position)
+    end
+    possible_moves
+  end
 end
