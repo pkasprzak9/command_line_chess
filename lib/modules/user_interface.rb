@@ -24,6 +24,10 @@ module UserInterface
     message(message)
   end
 
+  def display_move_not_allowed_message
+    error('This move is not allowed as it would put your king in check. Please try again.')
+  end
+
   def display_end_game_message(player)
     message("#{player.name} wins!")
   end
