@@ -25,6 +25,14 @@ class King < Piece
     false
   end
 
+  def double_checked?(board, position)
+    temp = board.get_piece(position)
+    king_double = Piece.create(@color, 'king')
+    board.set_piece(king_double, position)
+    true if king_double.checked?(board, position)
+    board.set_piece(temp, position)
+  end
+
   def checked_by_opponent_king?(board, position)
     opponent_color = @color == :blue ? 'red' : 'blue'
     opponent_king = board.get_pieces(opponent_color).find { |piece| piece.is_a?(King) }
