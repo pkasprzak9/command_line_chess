@@ -48,28 +48,30 @@ class Game
 
   def player_turn(player)
     display_turn_info(player)
-    king = @board.get_king(player.color)
-    if king.checked?(board, @board.get_position(king))
-      temp = @board.chessboard.map(&:clone)
-      loop do
+    temp = board.chessboard.map(&:clone)
+    loop do
+      king = board.get_king(player.color)
+      if king.checked?(board, board.get_position(king))
         display_check_message(player)
         piece = select_piece(player)
         display_possible_moves(piece.possible_moves(board), player.color)
         position = select_square(piece)
         move(piece, position)
-        if king.checked?(board, @board.get_position(king))
-          @board.chessboard = temp
-        else
-          piece.first_move = false
-          break
-        end
+      else
+        piece = select_piece(player)
+        display_possible_moves(piece.possible_moves(board), player.color)
+        position = select_square(piece)
+        move(piece, position)
+        piece.first_move = false
       end
-    else
-      piece = select_piece(player)
-      display_possible_moves(piece.possible_moves(board), player.color)
-      position = select_square(piece)
-      move(piece, position)
-      piece.first_move = false
+      if king.checked?(board, board.get_position(king))
+        display_move_not_allowed_message
+        board.chessboard = temp
+        board.display_chessboard
+      else
+        piece.first_move = false
+        break
+      end
     end
     @winner = player if mate?(@players[1 - @players.index(player)])
   end
