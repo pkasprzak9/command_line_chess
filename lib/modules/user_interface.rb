@@ -76,6 +76,7 @@ module UserInterface
   end
 
   def display_chessboard
+    30.times { puts "\n" }
     number = 8
     letters = %w[A B C D E F G H]
     colors = %i[white black]
