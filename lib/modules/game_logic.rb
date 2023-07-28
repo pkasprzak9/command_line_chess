@@ -109,20 +109,6 @@ module GameLogic
     @board.set_piece(piece, position)
   end
 
-  def mate?(player)
-    piece = @board.get_king(player.color)
-    position = @board.get_position(piece)
-    return false unless piece.checked?(@board, position)
-
-    possible_moves = piece.possible_moves(@board)
-    possible_moves.each do |move|
-      return false unless piece.checked?(@board, move)
-    end
-    return true unless defend_king?(@board, piece)
-
-    false
-  end
-
   def castling(piece)
     king = piece
     king_approved_positions = [[0, 4], [7, 4]]
@@ -137,23 +123,21 @@ module GameLogic
     @board.set_piece(rook, [rook_position[0], rook_position[1] - 2])
   end
 
-  private
+  def mate?(player)
+    piece = @board.get_king(player.color)
+    position = @board.get_position(piece)
+    return false unless piece.checked?(@board, position)
 
-  def castling?(piece)
-    king = piece
-    king_position = @board.get_position(king)
-    empty_positions = [[king_position[0], king_position[1] + 1], [king_position[0], king_position[1] + 2]]
-    return false unless [[0, 4], [7, 4]].include?(king_position)
+    possible_moves = piece.possible_moves(@board)
+    possible_moves.each do |move|
+      return false unless piece.checked?(@board, move) || piece.double_checked?(@board, move)
+    end
+    return true unless defend_king?(@board, piece)
 
-    return false if king.checked?(@board, [king_position[0], king_position[1] + 2]) || king.checked?(@board, [king_position[0], king_position[1] + 1])
-
-    return false unless empty_positions.all? { |position| @board.chessboard[position[0]][position[1]] == '' }
-
-    rook = @board.get_piece([king_position[0], king_position[1] + 3])
-    return false unless king.first_move == true && rook.first_move == true
-
-    true
+    false
   end
+
+  private
 
   def defend_king?(board, piece)
     checking_piece = get_checking_piece(board, piece)
@@ -218,6 +202,22 @@ module GameLogic
     piece_position = @board.get_position(piece)
     @board.remove_piece(piece_position)
     @board.set_piece(piece, position)
+  end
+
+  def castling?(piece)
+    king = piece
+    king_position = @board.get_position(king)
+    empty_positions = [[king_position[0], king_position[1] + 1], [king_position[0], king_position[1] + 2]]
+    return false unless [[0, 4], [7, 4]].include?(king_position)
+
+    return false if king.checked?(@board, [king_position[0], king_position[1] + 2]) || king.checked?(@board, [king_position[0], king_position[1] + 1])
+
+    return false unless empty_positions.all? { |position| @board.chessboard[position[0]][position[1]] == '' }
+
+    rook = @board.get_piece([king_position[0], king_position[1] + 3])
+    return false unless king.first_move == true && rook.first_move == true
+
+    true
   end
 
   def pawn_promotion?(piece)
