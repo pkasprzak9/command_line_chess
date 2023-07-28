@@ -46,6 +46,9 @@ class Game
     display_end_game_message(@winner)
   end
 
+  # I know this method is too long, but so far I haven't found a way to make it
+  # shorter. I tried to split it into smaller methods, but every time it
+  # changed the logic of the game. I'll try to refactor it later.
   def player_turn(player)
     display_turn_info(player)
     temp = board.chessboard.map(&:clone)
