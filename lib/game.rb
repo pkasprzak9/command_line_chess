@@ -68,9 +68,9 @@ class Game
         piece.first_move = false
       end
       if king.checked?(board, board.get_position(king))
-        display_move_not_allowed_message
         board.chessboard = temp
         board.display_chessboard
+        display_move_not_allowed_message
       else
         piece.first_move = false
         break
