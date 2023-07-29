@@ -145,14 +145,15 @@ module GameLogic
     my_pieces.each do |my_piece|
     end
     checking_squares = get_checking_squares(board, piece)
+    p checking_squares
     my_pieces.each do |my_piece|
       next if my_piece == piece
 
-      piece_can_move_to_checking_piece = my_piece.possible_moves(board).include?(board.get_position(checking_piece))
+      piece_can_move_to_checking_line = my_piece.possible_moves(board).any? { |move| checking_squares.include?(move) }
       piece_can_capture_checking_piece = my_piece.possible_moves(board).include?(board.get_position(checking_piece))
       piece_is_on_checking_square = checking_squares.include?(board.get_position(my_piece))
 
-      return true if piece_can_move_to_checking_piece || piece_is_on_checking_square || piece_can_capture_checking_piece
+      return true if piece_can_move_to_checking_line || piece_is_on_checking_square || piece_can_capture_checking_piece
     end
     false
   end
@@ -164,20 +165,29 @@ module GameLogic
     checking_squares << board.get_position(checking_piece)
     direction = calculate_direction(board, piece, checking_piece_position)
     checking_piece.possible_moves(board).each do |move|
-      next_move_position = [checking_piece_position[0] + direction[:row], checking_piece_position[1] + direction[:col]]
+      multiplier = 1
+      loop do
+        break if move == checking_piece_position
 
-      next unless move == next_move_position
+        next_move_position = [checking_piece_position[0] + direction[:row] * multiplier, checking_piece_position[1] + direction[:col] * multiplier]
+        break unless board.valid_position?(next_move_position)
 
-      move(checking_piece, move)
-      checking_squares << move if piece.checked?(board, board.get_position(piece))
-      move(checking_piece, checking_piece_position)
+        multiplier += 1
+        next unless move == next_move_position
+
+        move(checking_piece, move)
+        checking_squares << move if piece.checked?(board, board.get_position(piece))
+        move(checking_piece, checking_piece_position)
+      end
     end
     checking_squares
   end
 
   def calculate_direction(board, piece, checking_piece_position)
-    direction_row = checking_piece_position[0] - board.get_position(piece)[0]
-    direction_col = checking_piece_position[1] - board.get_position(piece)[1]
+    direction_row = board.get_position(piece)[0] - checking_piece_position[0]
+    direction_col = board.get_position(piece)[1] - checking_piece_position[1]
+    # direction_row = checking_piece_position[0] - board.get_position(piece)[0]
+    # direction_col = checking_piece_position[1] - board.get_position(piece)[1]
 
     direction_row = direction_row.positive? ? 1 : -1 if direction_row != 0
     direction_col = direction_col.positive? ? 1 : -1 if direction_col != 0
